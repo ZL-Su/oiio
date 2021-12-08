@@ -101,6 +101,11 @@ public:
     /// Construct from T* and length.
     constexpr span (pointer data, size_type size) noexcept
         : m_data(data), m_size(size) { }
+    /// Construct from T* and length with any integral type.
+    // This is added to supress the narrowing conversion error.
+    template<typename _Ity, typename = std::enable_if_t<std::is_integral_v<_Ity>>>
+    constexpr span(pointer data, _Ity size) noexcept
+        : span(data, size_type(size)){ }
 
     /// Construct from begin and end pointers.
     constexpr span (pointer b, pointer e) noexcept
